@@ -9,8 +9,7 @@ class CounterText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final homeProvider =
-        context.dependOnInheritedWidgetOfExactType<MyHomePageProvider>()!;
+    final homeProvider = MyHomePageProvider.of(context);
 
     return Container(
       width: 100,

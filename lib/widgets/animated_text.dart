@@ -8,8 +8,7 @@ class AnimatedText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final homeProvider =
-        context.dependOnInheritedWidgetOfExactType<MyHomePageProvider>()!;
+    final homeProvider = MyHomePageProvider.of(context);
 
     return Center(
       child: AnimatedSwitcher(

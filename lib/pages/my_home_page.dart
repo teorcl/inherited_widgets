@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:math' as math;
 import 'package:inherited_widgets/widgets/counter_text.dart';
 
+import '../main.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -25,10 +27,21 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = ThemeProvider.of(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: [
+          Switch(
+            value: themeProvider.isDarkModeEnable,
+            activeColor: Colors.redAccent,
+            onChanged: (_) {
+              themeProvider.toggleDarkMode();
+            },
+          )
+        ],
       ),
       body: Center(
         child: Column(
@@ -42,6 +55,11 @@ class _MyHomePageState extends State<MyHomePage> {
               counter: _counter,
               color: _color,
               child: const CounterText(),
+            ),
+            Builder(
+              builder: (contextBuilder) {
+                return Text('Dentro del Widget Builder');
+              },
             ),
           ],
         ),
@@ -68,6 +86,20 @@ class MyHomePageProvider extends InheritedWidget {
 
   @override
   bool updateShouldNotify(MyHomePageProvider oldWidget) {
-    return true;
+    bool shouldNotify =
+        oldWidget.counter != counter || oldWidget.color != color;
+
+    return shouldNotify;
+  }
+
+  static MyHomePageProvider of(BuildContext context) {
+    final provider =
+        context.dependOnInheritedWidgetOfExactType<MyHomePageProvider>();
+    assert(
+      provider != null,
+      'El contexto usado no es el contexto de un hijo de MyHomePageProvider',
+    );
+
+    return provider!;
   }
 }
