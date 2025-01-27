@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:inherited_widgets/state_management/consumer.dart';
+import 'package:inherited_widgets/state_management/teo_provider.dart';
 import 'dart:math' as math;
 import 'package:inherited_widgets/widgets/counter_text.dart';
 
+import '../global/theme_controller.dart';
 import '../main.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -27,18 +30,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = ThemeProvider.of(context);
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
         actions: [
-          Switch(
-            value: themeProvider.isDarkModeEnable,
-            activeColor: Colors.redAccent,
-            onChanged: (_) {
-              themeProvider.toggleDarkMode();
+          Consumer<ThemeController>(
+            builder: (_, controller) {
+              return Switch(
+                value: controller.isDarkModeEnable,
+                activeColor: Colors.redAccent,
+                onChanged: (_) {
+                  controller.toggleTheme();
+                },
+              );
             },
           )
         ],
